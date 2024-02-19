@@ -19,7 +19,6 @@ namespace StaticFieldEpidEval.Models
             var fieldLines = GetLinesAfterUID(uid);
             if (fieldLines != null && fieldLines.Count > 0)
             {
-
                 MessageBox.Show("Found " + fieldLines.Count + " lines of data for UID " + uid);
                 PredictedFieldData = new List<PredictedFieldData>();
                 foreach (var fieldLine in fieldLines)
@@ -55,7 +54,8 @@ namespace StaticFieldEpidEval.Models
 
         /// <summary>
         /// Retrieves the lines representing the field data from clipboard if UID found in the text
-        /// Also sets the InVivo property to true if the field is in vivo, false if in vitro
+        /// and creates a list of PredictedFieldData objects from the data.
+        /// Sets the InVivo property to true if the field is in vivo, false if in vitro.
         /// </summary>
         /// <param name="uID"></param>
         /// <returns></returns>

@@ -34,7 +34,8 @@ namespace VMS.DV.PD.Scripting
                 return;
             }
 
-  
+  // TODO: convert this to wpf and move everything to the viewmodel
+
 
             StringBuilder exploreThing = new StringBuilder();
 
@@ -45,13 +46,33 @@ namespace VMS.DV.PD.Scripting
 
             var parsedLogFile = new ParseLogFile(planUID);
 
+            if (parsedLogFile.PredictedFieldData.Any())
+            {
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+
             // start by checking if invivo or invitro to know which section of the log file to read
             // for some reason there is no IDUVrt, only IDULat and IDULng. Go by UID of the plan instead
             var sdf = pdBeam.PortalDoseImages[0].Image;
 
-
             exploreThing.AppendLine($"Plan id {plan.Id}");
             exploreThing.AppendLine($"pdPlan id {pdPlan.Id}");
+
             List<PDBeam> pdBeams = pdPlan.Beams.Where(b => b.PortalDoseImages.Count >= 1).ToList();
             // might want to reduce to only main fields before creating the list of result
 
@@ -61,8 +82,6 @@ namespace VMS.DV.PD.Scripting
                 result.Add(new PortalDoseResult(pdb));
             }
 
-
-
             Beam beam = pdBeam.Beam;
 
             var doseImage = context.DoseImage;
@@ -70,17 +89,10 @@ namespace VMS.DV.PD.Scripting
 
             doseImage.GetMinMax(out int minValue, out int maxValue, false);
 
-
-
-            //TODO: check plan UID from copied json file
-
-
-
             Frame portalDose = doseImage.Image.Frames[0];
             // size and resolution of portalDose and refDoseOnPortal are identical
             int sizeX = portalDose.XSize;
             int sizeY = portalDose.YSize;
-
 
             var iduLat = doseImage.Image.IDULat;
             var iduLng = doseImage.Image.IDULng;
@@ -99,23 +111,6 @@ namespace VMS.DV.PD.Scripting
 
             double pixelsPerMmAtIso = 1190 / (400 * 1000 / iduVrt);
             Vector2D ReadOutPositionCollimatorAtIso = new Vector2D(0, 0);
-
-
-            // check if there is a comment with measured position
-            if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
-                string clipboardText = Clipboard.GetText(TextDataFormat.Text);
-                MessageBox.Show("clipboardtext:" + clipboardText);
-            }
-            else
-            {
-                double[] commentPosition = GetMeasuredPositionFromComment(beam);
-                if (commentPosition != null && double.IsNaN(commentPosition[0]) == false && double.IsNaN(commentPosition[1]))
-                {
-                    ReadOutPositionCollimatorAtIso.X = commentPosition[0] * 10; // assuming cm in comment
-                    ReadOutPositionCollimatorAtIso.Y = commentPosition[1] * 10;
-                }
-            }
 
 
             var collAngle = beam.ControlPoints[0].CollimatorAngle;
@@ -182,35 +177,6 @@ namespace VMS.DV.PD.Scripting
 
         }
 
-        internal double[] GetMeasuredPositionFromComment(Beam beam)
-        {
-            string secondLine = string.Empty;
-            var commentLines = beam.Comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            if (commentLines.Length > 1)
-            {
-                secondLine = commentLines[1];
-            }
-
-            if (!string.IsNullOrEmpty(secondLine))
-            {
-                string comment = secondLine.Replace(',', '.');
-                string[] positionsInComment = comment.Split(';');
-                if (double.TryParse(positionsInComment[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double positionX) &&
-                    double.TryParse(positionsInComment[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double positionY))
-                {
-                    return new double[] { positionX, positionY };
-                }
-                else
-                {
-                    return new double[] { double.NaN, double.NaN };
-                }
-            }
-            else
-            {
-                return new double[] { double.NaN, double.NaN };
-            }
-        }
-    }
 
 
 
