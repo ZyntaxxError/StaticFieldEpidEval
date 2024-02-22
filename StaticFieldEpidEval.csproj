@@ -40,10 +40,13 @@
     <Reference Include="PortalDosimetry">
       <HintPath>H:\Aria 18\PortalDosimetry\PortalDosimetry.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,9 +58,13 @@
     <Reference Include="VMS.DV.PD.Scripting">
       <HintPath>H:\Aria 18\PortalDosimetry\VMS.DV.PD.Scripting.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculateGWDD.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\PortalDoseResult.cs" />
     <Compile Include="StaticFieldEpidEval.cs" />
     <Compile Include="Models\ParseLogFile.cs" />
@@ -74,6 +81,12 @@
     <EmbeddedResource Include="WeightedGradientForm.resx">
       <DependentUpon>WeightedGradientForm.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -33,7 +33,7 @@ namespace StaticFieldEpidEval.Models
                         {
                             PredictedFieldData.Add(new PredictedFieldData
                             {
-                                FieldId = intValue,
+                                FieldId = intValue.ToString(),
                                 ReadOutPositionCollimatorAtIso = new Vector2D(doubleValue1, doubleValue2),
                                 PredictedValue = doubleValue3
                             });
@@ -81,15 +81,13 @@ namespace StaticFieldEpidEval.Models
                     foundUID = true;
                 }
             }
-
             return foundUID ? result : null;
         }
-
     }
 
-    internal class PredictedFieldData
+    public class PredictedFieldData
     {
-        public int FieldId { get; set; }
+        public string FieldId { get; set; }
         public Vector2D ReadOutPositionCollimatorAtIso { get; set; }
         public double PredictedValue { get; set; }
     }
