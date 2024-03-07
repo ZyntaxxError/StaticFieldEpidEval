@@ -15,7 +15,6 @@ namespace StaticFieldEpidEval.Models
     /// </summary>
     public class PortalDoseResult
     {
-
         public PortalDoseResult(PDBeam pdBeam, PredictedFieldData predictedFieldData)
         {
             StringBuilder calculationLog = new StringBuilder();
@@ -33,6 +32,10 @@ namespace StaticFieldEpidEval.Models
                 // size and resolution of portalDose and refDoseOnPortal are identical
                 int sizeX = portalDose.XSize;
                 int sizeY = portalDose.YSize;
+
+
+                calculationLog.AppendLine($"sizeX {sizeX}, sizeY {sizeY}");
+
 
                 IduLat = doseImage.Image.IDULat;
                 IduLng = doseImage.Image.IDULng;

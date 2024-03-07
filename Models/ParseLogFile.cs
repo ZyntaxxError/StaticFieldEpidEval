@@ -13,7 +13,6 @@ namespace StaticFieldEpidEval.Models
         public bool InVivo { get; set; }
         public List<PredictedFieldData> PredictedFieldData { get; set; }
 
-
         public ParseLogFile(string uid)
         {
             var fieldLines = GetLinesAfterUID(uid);
