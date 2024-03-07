@@ -1,5 +1,6 @@
 using StaticFieldEpidEval;
 using StaticFieldEpidEval.Models;
+using StaticFieldEpidEval.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,74 +22,75 @@ namespace VMS.DV.PD.Scripting
         {
         }
 
-        public void Execute(ScriptContext context, System.Windows.Window window)
+        public void Execute(ScriptContext context, Window window)
         {
             if (context.DoseImage == null)
             {
-                MessageBox.Show("The current context does not allow to perform an analysis because it does not contain a dose image.");
+                MessageBox.Show("The current context does not contain a dose image.");
                 return;
             }
             else
             {
-                window.Content = new MainView() { };
-                //SetupWindow(mainWindow, "Plan Checker");
+                window.Content = new MainView()
+                {
+                    DataContext = new MainViewModel(context)
+
+
+
+                };
+                window.SizeToContent = SizeToContent.WidthAndHeight;
+                window.Title = "StaticFieldEpidEval: Portal dosimetry evaluation of static fields";
             }
-            // TODO: convert this to wpf and move everything to the viewmodel
-            StringBuilder exploreThing = new StringBuilder();
 
-            var pdBeam = context.DoseImage.PDBeam;
-            var pdPlan = pdBeam.PDPlanSetup;
-            var plan = pdBeam.PDPlanSetup.PlanSetup;
-            var planUID = plan.UID;
+            //StringBuilder exploreThing = new StringBuilder();
+
+            //var pdBeam = context.DoseImage.PDBeam;
+            //var pdPlan = pdBeam.PDPlanSetup;
+            //var plan = pdBeam.PDPlanSetup.PlanSetup;
+            //var planUID = plan.UID;
 
 
 
-            // Collect data from the log file, i.e. the calculation log from PlanCheck copied to clipboard 
-            var parsedLogFile = new ParseLogFile(planUID);
+            //// Collect data from the log file, i.e. the calculation log from PlanCheck copied to clipboard 
+            //var parsedLogFile = new ParseLogFile(planUID);
 
   
 
-            exploreThing.AppendLine($"Plan id {plan.Id}");
-            exploreThing.AppendLine($"pdPlan id {pdPlan.Id}");
-            exploreThing.AppendLine($"images {pdBeam.PortalDoseImages.Count}");
-            MessageBox.Show(exploreThing.ToString());
+            //exploreThing.AppendLine($"Plan id {plan.Id}");
+            //exploreThing.AppendLine($"pdPlan id {pdPlan.Id}");
+            //exploreThing.AppendLine($"images {pdBeam.PortalDoseImages.Count}");
+            //MessageBox.Show(exploreThing.ToString());
 
-            List<PDBeam> pdBeams = pdPlan.Beams.Where(b => b.PortalDoseImages.Count >= 1).ToList();
+            //List<PDBeam> pdBeams = pdPlan.Beams.Where(b => b.PortalDoseImages.Count >= 1).ToList();
 
-            MessageBox.Show($"Found {pdBeams.Count} beams with portal dose images");
-
-
-            List<PortalDoseResult> result = new List<PortalDoseResult>();
+            //MessageBox.Show($"Found {pdBeams.Count} beams with portal dose images");
 
 
-            if (parsedLogFile.PredictedFieldData.Any())
-            {
-                foreach (var predictedFieldData in parsedLogFile.PredictedFieldData)
-                {
-                    pdBeam = pdBeams.Where(b => b.Beam.Id.Equals(predictedFieldData.FieldId)).FirstOrDefault();
-                    if (pdBeam != null)
-                    {
-                        result.Add(new PortalDoseResult(pdBeam, predictedFieldData));
-                    }
-                    else
-                    {
-                        MessageBox.Show($"No beam found for field id {predictedFieldData.FieldId}");
-                    }
-                }
-            } else
-            {
-                MessageBox.Show("No predicted field data found");
-            }
+            //List<PortalDoseResult> result = new List<PortalDoseResult>();
+
+
+            //if (parsedLogFile.PredictedFieldData.Any())
+            //{
+            //    foreach (var predictedFieldData in parsedLogFile.PredictedFieldData)
+            //    {
+            //        pdBeam = pdBeams.Where(b => b.Beam.Id.Equals(predictedFieldData.FieldId)).FirstOrDefault();
+            //        if (pdBeam != null)
+            //        {
+            //            result.Add(new PortalDoseResult(pdBeam, predictedFieldData));
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show($"No beam found for field id {predictedFieldData.FieldId}");
+            //        }
+            //    }
+            //} else
+            //{
+            //    MessageBox.Show("No predicted field data found");
+            //}
 
         }
 
-        private void SetupWindow(Window window, string title)
-        {
-            window.Title = title;
-            window.SizeToContent = SizeToContent.WidthAndHeight;
-            window.ResizeMode = ResizeMode.NoResize;
-            window.ShowDialog();
-        }
+
 
 
 

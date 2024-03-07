@@ -7,6 +7,113 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ItemsControl Grid.Column="0" ItemsSource="{Binding PortalDoseResults}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" MinWidth="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FieldId}" HorizontalAlignment="Center" FontWeight="DemiBold" Padding="5 1 5 1" />
+                                <!--Imager position values-->
+                                <!--<Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="3"  Background="White" Style="{StaticResource VerificationFieldBorder}"/>-->
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding IDUVrtCm, StringFormat=F1}"  />
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding IDULngCm, StringFormat=F1}" HorizontalAlignment="Center">
+                          
+                                </TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding IDULatCm, StringFormat=F1}" HorizontalAlignment="Center">
+                                    <!--<TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Padding" Value="5 1 5 1" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IDULatCm, Converter={StaticResource inverseDoubleToBooleanConverter}}" Value="True">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Setter Property="FontWeight" Value="Normal" />
+                                                    <Setter Property="Padding" Value="5 1 5 1" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>-->
+                                </TextBlock>
+                                <!--Read out position value-->
+                                <!--<Border Grid.Row="5" Grid.Column="0" Grid.RowSpan="2"  Background="White"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Text="{Binding ReadoutPositionInCollimatorAsString}" Style="{StaticResource VerificationValueTextBlock}" VerticalAlignment="Center"/>-->
+                                <!--Calculated and measured values and result-->
+                                <!--<Border Grid.Column="0" Grid.Row="7" Grid.RowSpan="3"  Background="White" />-->
+                                <TextBlock Grid.Column="0" Grid.Row="7" Text="{Binding PredictedValueCU, StringFormat=F3}" />
+                                <TextBlock Grid.Column="0" Grid.Row="8" Text="{Binding PortalDosePixelValueCU, StringFormat=F3}" />
+                                <TextBlock Grid.Column="0" Grid.Row="9" Text="{Binding PixelValueDeviationPercent, StringFormat=F1}" >
+                                    <!--<TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Padding" Value="5 1 5 1" />
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsResultOutsideTolerance}" Value="True">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                    <Setter Property="Padding" Value="5 1 5 1" />
+                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>-->
+                                </TextBlock>
+
+
+                                <!--Calculation log-->
+                                <!--<ScrollViewer Grid.Column="0" Grid.Row="11" 
+                                                  HorizontalScrollBarVisibility="Auto" 
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  MaxHeight="450">
+                                                  --><!--Visibility="{Binding ElementName=VerificationViewUserControl, Path=DataContext.ShowCalculationLog, Converter={StaticResource booleanToCollapsedConverter}}"--><!--
+                                    <TextBlock Text="{Binding CalculationLog}"
+                                                   Padding="5,0,5,0"
+                                                   HorizontalAlignment="Left"
+                                                   TextWrapping="Wrap" >
+                                    </TextBlock>
+                                </ScrollViewer>-->
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

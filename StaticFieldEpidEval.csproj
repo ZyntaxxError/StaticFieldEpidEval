@@ -61,26 +61,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculateGWDD.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PortalDoseResult.cs" />
     <Compile Include="StaticFieldEpidEval.cs" />
     <Compile Include="Models\ParseLogFile.cs" />
-    <Compile Include="RandomTest.cs" />
     <Compile Include="Models\Vector2D.cs" />
-    <Compile Include="WeightedGradientForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WeightedGradientForm.Designer.cs">
-      <DependentUpon>WeightedGradientForm.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="WeightedGradientForm.resx">
-      <DependentUpon>WeightedGradientForm.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\MainView.xaml">
@@ -88,8 +76,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
