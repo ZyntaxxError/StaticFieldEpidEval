@@ -8,17 +8,24 @@ using System.Windows.Forms;
 
 namespace StaticFieldEpidEval.Models
 {
+    /// <summary>
+    /// Parses the csv section of the logfile from PlanChecker.esapi.dll that has previously been copied to the clipboard.
+    /// Determines if the field is in vivo or in vitro and creates a list of PredictedFieldData objects from the data.
+    /// </summary>
     internal class ParseLogFile
     {
-        public bool InVivo { get; set; }
+        public bool InVivoFlag { get; set; }
         public List<PredictedFieldData> PredictedFieldData { get; set; }
 
+        /// <summary>
+        /// Constructor for the ParseLogFile class. Retrieves the lines representing the field data from clipboard if UID found in the text
+        /// </summary>
+        /// <param name="uid"></param>
         public ParseLogFile(string uid)
         {
             var fieldLines = GetLinesAfterUID(uid);
             if (fieldLines != null && fieldLines.Count > 0)
             {
-                MessageBox.Show("Found " + fieldLines.Count + " lines of data for UID " + uid);
                 PredictedFieldData = new List<PredictedFieldData>();
                 foreach (var fieldLine in fieldLines)
                 {
@@ -68,12 +75,15 @@ namespace StaticFieldEpidEval.Models
             {
                 if (foundUID)
                 {
-                    if (line.Trim() == "END_INVIVO" || line.Trim() == "END_INVITRO")
+                    if (line.Contains("END_INVIVO") || line.Contains("END_INVITRO"))
                     {
-                        InVivo = line.Trim() == "END_INVIVO";
+                        InVivoFlag = line.Contains("END_INVIVO");
                         break;
                     }
-                    result.Add(line);
+                    else
+                    {
+                        result.Add(line);
+                    }
                 }
                 else if (line.Contains(uID))
                 {

@@ -1,4 +1,5 @@
 ﻿using StaticFieldEpidEval.Models;
+using StaticFieldEpidEval.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,35 +12,18 @@ using VMS.DV.PD.Scripting;
 
 namespace StaticFieldEpidEval.ViewModels
 {
-    internal class MainViewModel
+    internal class MainViewModel : BaseViewModel
     {
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
         private List<PortalDoseResult> _portalDoseResults;
-
         public List<PortalDoseResult> PortalDoseResults
-        {
-            get
-            {
-                return _portalDoseResults;
-            }
-            set
-            {
-                _portalDoseResults = value;
-                OnPropertyChanged();
-            }
+        { 
+          get { return _portalDoseResults; }
+          set { _portalDoseResults = value; OnPropertyChanged(); }
         }
 
         public MainViewModel(ScriptContext context)
         {
-
             StringBuilder calculationLog = new StringBuilder();
 
             var pdBeam = context.DoseImage.PDBeam;
@@ -65,10 +49,10 @@ namespace StaticFieldEpidEval.ViewModels
                     pdBeam = pdBeams.Where(b => b.Beam.Id.Equals(predictedFieldData.FieldId)).FirstOrDefault();
                     if (pdBeam != null)
                     {
-                        var pdResult = new PortalDoseResult(pdBeam, predictedFieldData);
+                        var pdResult = new PortalDoseResult(pdBeam, predictedFieldData, parsedLogFile.InVivoFlag);
                         PortalDoseResults.Add(pdResult);
                         calculationLog.AppendLine(pdResult.CalculationLog);
-                        MessageBox.Show($"Field id {predictedFieldData.FieldId}, predicted value {predictedFieldData.PredictedValue}, portal dose pixel value {pdResult.PortalDosePixelValueCU}, deviation {pdResult.PixelValueDeviationPercent:F1}%");
+                        //MessageBox.Show($"Field id {predictedFieldData.FieldId}, predicted value {predictedFieldData.PredictedValue}, portal dose pixel value {pdResult.PortalDosePixelValueCU}, deviation {pdResult.PixelValueDeviationPercent:F1}%");
                     }
                     else
                     {
@@ -80,7 +64,7 @@ namespace StaticFieldEpidEval.ViewModels
             {
                 MessageBox.Show("No predicted field data found");
             }
-            MessageBox.Show(calculationLog.ToString());
+            //MessageBox.Show(calculationLog.ToString());
         }
 
 

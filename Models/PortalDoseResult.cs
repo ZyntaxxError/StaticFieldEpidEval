@@ -16,22 +16,27 @@ namespace StaticFieldEpidEval.Models
     /// </summary>
     public class PortalDoseResult
     {
+        internal const double DefaultIduVrtInVivo = 1700.0;
+        internal const double DefaultIduVrtInVitro = 1000.0;
         public double IduVrt { get; set; }
         public double IduLat { get; set; }
         public double IduLng { get; set; }
 
         public string FieldId { get; set; }
+
+        public string ReadoutPositionInCollimatorAsString { get; set; }
+
         public double PortalDosePixelValueCU { get; set; }
         public double PredictedValueCU { get; set; }
         public double PixelValueDeviationPercent { get; set; }
         public string CalculationLog { get; set; }
 
 
-        public PortalDoseResult(PDBeam pdBeam, PredictedFieldData predictedFieldData)
+        public PortalDoseResult(PDBeam pdBeam, PredictedFieldData predictedFieldData, bool inVivo)
         {
             StringBuilder calculationLog = new StringBuilder();
-            // TODO: check if more than one image, in that case why?
-            
+
+            calculationLog.AppendLine($"field id {pdBeam.Id}");
             calculationLog.AppendLine($"images {pdBeam.PortalDoseImages.Count}");
 
             if (pdBeam.PortalDoseImages.Count > 0)
@@ -40,44 +45,82 @@ namespace StaticFieldEpidEval.Models
                 IduVrt = pdBeam.PortalDoseImages.FirstOrDefault().Image.SID;
                 IduLat = pdBeam.PortalDoseImages.FirstOrDefault().Image.IDULat;
                 IduLng = pdBeam.PortalDoseImages.FirstOrDefault().Image.IDULng;
-                PredictedValueCU = predictedFieldData.PredictedValue;
+
+                ReadoutPositionInCollimatorAsString = $"( {predictedFieldData.ReadOutPositionCollimatorAtIso.X / 10:F1}, {predictedFieldData.ReadOutPositionCollimatorAtIso.Y / 10:F1} )";
+                // if IduVrt not the default for InVivo or InVitro, add a correction to the calculation log
+                PredictedValueCU = GetPredictedValueCU(predictedFieldData.PredictedValue, inVivo, ref calculationLog);
+
+
                 PortalDosePixelValueCU = GetPortalDosePixelValueCU(pdBeam, predictedFieldData, ref calculationLog);
                 PixelValueDeviationPercent = (PortalDosePixelValueCU - predictedFieldData.PredictedValue) / predictedFieldData.PredictedValue * 100;
                 calculationLog.AppendLine($"pixel value deviation from predicted: {PixelValueDeviationPercent:F1}%");
+                CalculationLog = calculationLog.ToString();
             }
             else
             {
+               // TODO: handle error
+            }
+        }
 
+
+        /// <summary>
+        /// Get the predicted value corrected for the actual IDU Vrt if it doesn't equal the default value within a certain tolerance
+        /// </summary>
+        /// <param name="predictedValue"></param>
+        /// <param name="inVivo"></param>
+        /// <param name="calculationLog"></param>
+        /// <returns></returns>
+        private double GetPredictedValueCU(double predictedValue, bool inVivo, ref StringBuilder calculationLog)
+        {
+            double expectedIduVrt = inVivo ? DefaultIduVrtInVivo : DefaultIduVrtInVitro;
+            double vrtTolerance = inVivo ? 10 : 5; // mm tolerance for IDU Vrt, smaller tolerance for in vitro as the value is more critical
+
+            if (Math.Abs(expectedIduVrt - IduVrt) > vrtTolerance)
+            {
+                calculationLog.AppendLine($"Warning: IDU Vrt is not the default value");
+                calculationLog.AppendLine($"Expected IDU Vrt: {expectedIduVrt:F1}, actual IDU Vrt: {IduVrt:F1}");
+                calculationLog.AppendLine("A correction will be applied to the predicted value");
+                return predictedValue * Math.Pow(expectedIduVrt / IduVrt, 2);
+            }
+            else
+            {
+                return predictedValue;
             }
         }
 
         private double GetPortalDosePixelValueCU(PDBeam pdBeam, PredictedFieldData predictedFieldData, ref StringBuilder calculationLog)
         {
             var doseImage = pdBeam.PortalDoseImages.FirstOrDefault();
-            Frame portalDose = doseImage.Image.Frames[0];
-            // size and resolution of portalDose and refDoseOnPortal are identical
-            int sizeX = portalDose.XSize;
-            int sizeY = portalDose.YSize;
+            Frame portalDoseFrame = doseImage.Image.Frames[0];
 
-            calculationLog.AppendLine($"sizeX {sizeX}, sizeY {sizeY}");
+            // TODO: get all frames and calculate the sum pixel value(?) or maybe check if composite image is available
+
+
+            calculationLog.AppendLine($"Nr of frames for the first image: {doseImage.Image.Frames.Count}");
 
             IduLat = doseImage.Image.IDULat;
             IduLng = doseImage.Image.IDULng;
             IduVrt = doseImage.Image.SID;
+            // Add actual position of IDU to calculation log
+            calculationLog.AppendLine($"IDU Lat: {IduLat:F1}, IDU Lng: {IduLng:F1}, IDU Vrt: {IduVrt:F1}");
 
-            // shift of IDU projected to isocenter
+            // shift of IDU projected to isocenter, the shift is in mm
             var iduLatOnIso = IduLat * 1000 / IduVrt;
             var iduLngOnIso = IduLng * 1000 / IduVrt;
 
+            int sizeX = portalDoseFrame.XSize;
+            int sizeY = portalDoseFrame.YSize;
+            calculationLog.AppendLine($"sizeX {sizeX}, sizeY {sizeY}");
+
+            // get the pixels from the portal dose image
             ushort[,] pixelsPort = new ushort[sizeX, sizeY];
-            portalDose.GetVoxels(0, pixelsPort);
+            portalDoseFrame.GetVoxels(0, pixelsPort);
 
             // how is the index ordered in pixelsPort? assuming upper left corner in BEV [0,0]
-            double pixelsPerMmAtIso = 1190 / (400 * 1000 / IduVrt);
+            double pixelsPerMmAtIso = 1190 / (400 * 1000 / IduVrt); // TODO: 1190 is the number of pixels in the portal dose image?, 400 is size in mm in each direction,replace with a constant
 
-            Beam beam = pdBeam.Beam;
-
-            var collAngle = beam.ControlPoints[0].CollimatorAngle;
+            var collAngle = pdBeam.Beam.ControlPoints[0].CollimatorAngle;
+            // The readout position from planChecker is defined in the collimator coordinate system
             // rotate so that the readout position adapt to coordinate system for the idu
             var ReadOutPositionIDUAtIso = Vector2D.RotateVector(predictedFieldData.ReadOutPositionCollimatorAtIso, collAngle);
 
@@ -117,10 +160,10 @@ namespace StaticFieldEpidEval.Models
 
             calculationLog.AppendLine($"iduLat:{IduLat:F1}, iduLng:{IduLng:F1}, iduVrt:{IduVrt:F1}");
             calculationLog.AppendLine($"Predicted value: {predictedFieldData.PredictedValue:F1}");
-            calculationLog.AppendLine($"pixel value  {portalDose.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]):F3}");
+            calculationLog.AppendLine($"pixel value  {portalDoseFrame.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]):F3}");
             calculationLog.AppendLine($"readoutPositionIndexX:{readoutPositionIndexX:F1}, readoutPositionIndexY:{readoutPositionIndexY:F1}");
             calculationLog.AppendLine($"Distance from image left:{checkX:F1} mm, distance from image top:{checkY:F1} mm");
-            return portalDose.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]);
+            return portalDoseFrame.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]);
         }
     }
 }
