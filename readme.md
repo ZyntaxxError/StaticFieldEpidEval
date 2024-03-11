@@ -1,19 +1,33 @@
-# Project Title
+# StaticFieldEpidEval: A tool for point evaluation of static photon fields for portal dosimetry using the EPID
 
-A brief description of what this project does and who it's for.
+A simple point evaluation tool for portal dosimetry using the EPID. It is intended to be used for static fields only.
+Replaces the legacy method of using in vivo dosimetry with diodes for static fields.
 
 ## Installation
 
-Describe how to install / setup your local environement / add any necessary dependencies.
+Dependencies:
+
+```VMS.CA.Scripting
+```VMS.DV.PV.Scripting
+```PortalDosimetry
+
+Runs as a script in Portal Dosimetry module in Aria, in the Tools menu when a portal dosimetry image is in context.
+
 
 ## Usage
 
-Describe how to use your project.
+Expects a csv text section in clipboard with the following format:
 
-## Contributing
+```INVIVO_START
+```FieldID,FieldSize,SSD,Depth
+```1,10x10,100,10
+```2,20x20,100,10
+```3,30x30,100,10
+```INVIVO_END
+```1,2.5,3.0,2.45
+```INVIVO_END
 
-Contributions are welcome. Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+TBD ( maybe [MIT](https://choosealicense.com/licenses/mit/) or something else)
