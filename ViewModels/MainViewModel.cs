@@ -42,7 +42,7 @@ namespace StaticFieldEpidEval.ViewModels
 
             PortalDoseResults = new List<PortalDoseResult>();
 
-            if (parsedLogFile.PredictedFieldData.Any())
+            if (parsedLogFile.PredictedFieldData != null && parsedLogFile.PredictedFieldData.Any())
             {
                 foreach (var predictedFieldData in parsedLogFile.PredictedFieldData)
                 {
