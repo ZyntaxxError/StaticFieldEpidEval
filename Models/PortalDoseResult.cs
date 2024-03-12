@@ -31,6 +31,8 @@ namespace StaticFieldEpidEval.Models
         public double PixelValueDeviationPercent { get; set; }
         public string CalculationLog { get; set; }
 
+        public bool IsResultWithinTolerance { get; set; }
+
 
         public PortalDoseResult(PDBeam pdBeam, PredictedFieldData predictedFieldData, bool inVivo)
         {
@@ -47,9 +49,9 @@ namespace StaticFieldEpidEval.Models
                 IduLng = pdBeam.PortalDoseImages.FirstOrDefault().Image.IDULng;
 
                 ReadoutPositionInCollimatorAsString = $"( {predictedFieldData.ReadOutPositionCollimatorAtIso.X / 10:F1}, {predictedFieldData.ReadOutPositionCollimatorAtIso.Y / 10:F1} )";
+                
                 // if IduVrt not the default for InVivo or InVitro, add a correction to the calculation log
                 PredictedValueCU = GetPredictedValueCU(predictedFieldData.PredictedValue, inVivo, ref calculationLog);
-
 
                 PortalDosePixelValueCU = GetPortalDosePixelValueCU(pdBeam, predictedFieldData, ref calculationLog);
                 PixelValueDeviationPercent = (PortalDosePixelValueCU - predictedFieldData.PredictedValue) / predictedFieldData.PredictedValue * 100;
@@ -64,7 +66,7 @@ namespace StaticFieldEpidEval.Models
 
 
         /// <summary>
-        /// Get the predicted value corrected for the actual IDU Vrt if it doesn't equal the default value within a certain tolerance
+        /// Get the predicted value corrected for the actual IDU Vrt if it doesn't equal the default IDU Vrt within a certain tolerance
         /// </summary>
         /// <param name="predictedValue"></param>
         /// <param name="inVivo"></param>

@@ -3,14 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StaticFieldEpidEval"
+             x:Name="MainViewUserControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-
-
-
-
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/StaticFieldEpidEval;component/Views/Resources/ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
 
     <Grid Margin="5">
@@ -20,9 +23,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-
 
         <!--StackPanel that contains title and any general information, any controls also perhaps-->
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="8">
@@ -40,10 +42,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
-            
-            
-            
+
+            <!--Row titles and controls-->
             <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -60,53 +60,31 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Field Id:" ></TextBlock>
-                <!--Imager position headline-->
-                <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="3"  Background="White" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Imager Vrt [cm]" ></TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Imager Lng [cm]" ></TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Imager Lat [cm]" ></TextBlock>
+
                 <!--Read out position headline-->
-                <Border Grid.Row="4" Grid.Column="0" Grid.RowSpan="2"  Background="White" />
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Read out position  (X,Y) [cm]" 
+                <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"  Background="White" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Read out position  (X,Y) [cm]" 
                            Height="24"  HorizontalAlignment="Left" VerticalAlignment="Bottom"></TextBlock>
 
-
                 <!--Values and result headline-->
-                <Border Grid.Column="0" Grid.Row="7" Grid.RowSpan="3"  Background="White" />
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="Calculated value [CU]" ></TextBlock>
-                <TextBlock Grid.Row="8" Grid.Column="0" Text="Measured value [CU]" ></TextBlock>
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="Deviation [%]" ></TextBlock>
+                <Border Grid.Column="0" Grid.Row="3" Grid.RowSpan="3"  Background="White" />
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Calculated value [CU]" ></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Measured value [CU]" ></TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Deviation [%]" ></TextBlock>
+
                 <!--Calculation log headline-->
-                <!--<ToggleButton Grid.Column="0" Grid.Row="12"
+                <ToggleButton Grid.Column="0" Grid.Row="8"
                               Margin="0, 5, 0, 5"
                               IsChecked="{Binding ShowCalculationLog, Mode=TwoWay}"  
                               Content="View calculation summary" 
                               FontWeight="Normal"
                               HorizontalAlignment="Stretch">
-                </ToggleButton>-->
-                <!--<Button Grid.Column="0" Grid.Row="13"
-                        Margin="0, 5, 0, 5"
-                        Visibility="{Binding ElementName=VerificationViewUserControl, Path=DataContext.ShowCalculationLog, Converter={StaticResource booleanToCollapsedConverter}}"
-                        Command="{Binding CopyCalculationLogToClipboardCommand }"
-                        Content="Copy log to ClipBoard"
-                        FontWeight="Normal"
-                        HorizontalAlignment="Stretch">
-                </Button>-->
-
+                </ToggleButton>
             </Grid>
 
-
-
-
-
+            <!--Results-->
             <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -134,44 +112,19 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FieldId}" HorizontalAlignment="Center" FontWeight="DemiBold" Padding="5 1 5 1" />
-                                    <!--Imager position values-->
-                                    <!--<Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="3"  Background="White" Style="{StaticResource VerificationFieldBorder}"/>-->
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding IDUVrtCm, StringFormat=F1}"  />
-                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding IDULngCm, StringFormat=F1}" HorizontalAlignment="Center">
 
-                                    </TextBlock>
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding IDULatCm, StringFormat=F1}" HorizontalAlignment="Center">
-                                    <!--<TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="FontWeight" Value="DemiBold" />
-                                            <Setter Property="Padding" Value="5 1 5 1" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IDULatCm, Converter={StaticResource inverseDoubleToBooleanConverter}}" Value="True">
-                                                    <Setter Property="Foreground" Value="Gray"/>
-                                                    <Setter Property="FontWeight" Value="Normal" />
-                                                    <Setter Property="Padding" Value="5 1 5 1" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>-->
-                                    </TextBlock>
                                     <!--Read out position value-->
-                                    <Border Grid.Row="5" Grid.Column="0" Grid.RowSpan="2"  Background="White"/>
-                                <TextBlock Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Text="{Binding ReadoutPositionInCollimatorAsString}" VerticalAlignment="Center"/>
+                                    <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"  Background="White"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Text="{Binding ReadoutPositionInCollimatorAsString}" VerticalAlignment="Center"/>
                                     <!--Calculated and measured values and result-->
-                                    <!--<Border Grid.Column="0" Grid.Row="7" Grid.RowSpan="3"  Background="White" />-->
-                                    <TextBlock Grid.Column="0" Grid.Row="7" Text="{Binding PredictedValueCU, StringFormat=F3}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="8" Text="{Binding PortalDosePixelValueCU, StringFormat=F3}" />
-                                    <TextBlock Grid.Column="0" Grid.Row="9" Text="{Binding PixelValueDeviationPercent, StringFormat=F1}" >
-                                    <!--<TextBlock.Style>
+                                    <Border Grid.Column="0" Grid.Row="3" Grid.RowSpan="3"  Background="White" />
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding PredictedValueCU, StringFormat=F3}" />
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding PortalDosePixelValueCU, StringFormat=F3}" />
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="{Binding PixelValueDeviationPercent, StringFormat=F1}" >
+                                    <!--Do not want to have the tolerances in this script as it is in the PlanChecker script-->
+                                        <!--<TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="FontWeight" Value="DemiBold" />
                                             <Setter Property="Padding" Value="5 1 5 1" />
@@ -187,22 +140,21 @@
                                         </Style>
                                     </TextBlock.Style>-->
                                     </TextBlock>
-                                    <TextBlock Grid.Column="0" Grid.Row="11" Text="{Binding CalculationLog}" />
+                                    <!--<TextBlock Grid.Column="0" Grid.Row="11" Text="{Binding CalculationLog}" />-->
 
                                     <!--Calculation log-->
-                                    <!--<ScrollViewer Grid.Column="0" Grid.Row="11" 
+                                    <ScrollViewer Grid.Column="0" Grid.Row="8" 
                                                   HorizontalScrollBarVisibility="Auto" 
                                                   VerticalScrollBarVisibility="Auto"
-                                                  MaxHeight="450">
-                                                  -->
-                                    <!--Visibility="{Binding ElementName=VerificationViewUserControl, Path=DataContext.ShowCalculationLog, Converter={StaticResource booleanToCollapsedConverter}}"-->
-                                    <!--
-                                    <TextBlock Text="{Binding CalculationLog}"
+                                                  MaxHeight="450"
+                                                  Visibility="{Binding ElementName=MainViewUserControl, Path=DataContext.ShowCalculationLog, Converter={StaticResource booleanToCollapsedConverter}}">
+
+                                        <TextBlock Text="{Binding CalculationLog}"
                                                    Padding="5,0,5,0"
                                                    HorizontalAlignment="Left"
                                                    TextWrapping="Wrap" >
-                                    </TextBlock>
-                                </ScrollViewer>-->
+                                        </TextBlock>
+                                    </ScrollViewer>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -210,10 +162,24 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
-
-
-
-
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Checks }">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" />
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Result, Converter={StaticResource checkResultToString}}" 
+                                  Foreground="{Binding Result, Converter={StaticResource checkResultToColor}}" 
+                                  FontFamily="Webdings" FontWeight="Bold" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
-
 </UserControl>

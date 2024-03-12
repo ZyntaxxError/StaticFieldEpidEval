@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VMS.CA.Scripting;
 using System.Windows.Forms;
 
 namespace StaticFieldEpidEval.Models
@@ -16,6 +12,7 @@ namespace StaticFieldEpidEval.Models
     {
         public bool InVivoFlag { get; set; }
         public List<PredictedFieldData> PredictedFieldData { get; set; }
+        public List<Check> Checks { get; set; }
 
         /// <summary>
         /// Constructor for the ParseLogFile class. Retrieves the lines representing the field data from clipboard if UID found in the text
@@ -24,6 +21,7 @@ namespace StaticFieldEpidEval.Models
         public ParseLogFile(string uid)
         {
             var fieldLines = GetLinesAfterUID(uid);
+            Checks = new List<Check>();
             if (fieldLines != null && fieldLines.Count > 0)
             {
                 PredictedFieldData = new List<PredictedFieldData>();
@@ -46,14 +44,18 @@ namespace StaticFieldEpidEval.Models
                         }
                         else
                         {
-                            // TODO: Parsing failed, handle error
+                            Checks.Add(new Check(CheckResult.Error, "Error parsing predicted field data"));
                         }
                     }
                     else
                     {
-                        // Invalid input, handle error
+                        Checks.Add(new Check(CheckResult.Error, "Error parsing predicted field data"));
                     }
                 }
+            }
+            else
+            {
+                Checks.Add(new Check(CheckResult.Error, "No predicted field data found in clipboard"));
             }
         }
 

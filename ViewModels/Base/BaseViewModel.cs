@@ -1,5 +1,7 @@
-﻿using System;
+﻿using StaticFieldEpidEval.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -18,7 +20,12 @@ namespace StaticFieldEpidEval.ViewModels.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        public ObservableCollection<Check> Checks { get; set; }
 
+        public BaseViewModel()
+        {
+            Checks = new ObservableCollection<Check>();
+        }
 
     }
 }

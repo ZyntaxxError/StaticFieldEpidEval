@@ -1,0 +1,116 @@
+﻿
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:converters="clr-namespace:StaticFieldEpidEval.Views.Converters"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <converters:CheckResultToStringConverter x:Key="checkResultToString" />
+    <converters:BooleanToCollapsedConverter x:Key="booleanToCollapsedConverter" />
+    <converters:CheckResultToColorConverter x:Key="checkResultToColor" />
+    <!--<converters:InverseDoubleToBooleanConverter x:Key="inverseDoubleToBooleanConverter" />-->
+    <!--<converters:CheckResultToColorConverter x:Key="checkResultToColor" />
+    <converters:SummaryResultToColorConverter x:Key="summaryToColor" />
+    <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />-->
+    <Color x:Key="ErrorBorderColor">#37dede</Color>
+    <Color x:Key="GridColor">#EEF3F1</Color>
+    <Color x:Key="SummaryColor">#37dede</Color>
+    <!-- Headings color-->
+    <SolidColorBrush x:Key="ErrorBackground" Color="{StaticResource ErrorBorderColor}"/>
+    <SolidColorBrush x:Key="GridBackground" Color="{StaticResource GridColor}"/>
+    <SolidColorBrush x:Key="SummaryTextBlockBackground" Color="{StaticResource SummaryColor}"/>
+
+    <Style TargetType="Grid" x:Key="Grid">
+        <Setter Property="Background" Value="{StaticResource GridBackground}" />
+    </Style>
+
+    <Style TargetType="TabControl" x:Key="TabControl">
+        <Setter Property="Background" Value="#c8cfcf" />
+        <!-- Background color in main grids-->
+    </Style>
+
+    <Style TargetType="TabItem" x:Key="TopTabItem">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Height" Value="30" />
+    </Style>
+
+    <Style TargetType="TabItem" x:Key="LeftTabItem">
+        <!-- width of the left area on page-->
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="180" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style TargetType="ItemsControl" x:Key="ItemsControl">
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Background" Value="{StaticResource GridBackground}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="#CCD6D2" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="IconTextBlock">
+        <Setter Property="FontFamily" Value="Webdings" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <!--Verification Style-->
+
+    <Style TargetType="ItemsControl" x:Key="VerificationItemsControl">
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="VerificationTitleTextBlock">
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Padding" Value="5 1 5 1" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="VerificationValueTextBlock">
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Padding" Value="5 1 5 1" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="VerificationFieldBorder">
+        <Setter Property="BorderBrush" Value="DarkGray" />
+        <Setter Property="BorderThickness" Value="0.5, 0.3, 0.5, 0.3" />
+    </Style>
+
+
+    <Style TargetType="TextBlock" x:Key="TabIconTextBlock">
+        <Setter Property="FontFamily" Value="Webdings" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="ErrorBorder">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="0 0 2 2" />
+        <Setter Property="BorderBrush" Value="{StaticResource ErrorBackground}" />
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ErrorBorderTextBlock">
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="4 4" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ErrorTextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="SummaryTextBlock">
+        <Setter Property="Background" Value="{StaticResource SummaryTextBlockBackground}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="4 4" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+</ResourceDictionary>
