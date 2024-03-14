@@ -7,10 +7,13 @@ Replaces the legacy method of using in vivo dosimetry with diodes for static fie
 
 Dependencies:
 
-VMS.DV.PV.Scripting, 
+VMS.DV.PV.Scripting   
 VMS.CA.Scripting
 
-Runs as a script in Portal Dosimetry module in Aria 16.1
+Runs as a script in Portal Dosimetry module in Aria 16.1  
+Requires a cvs-formatted text in System.Windows.Forms.Clipboard with the expected values for the fields to be evaluated.
+
+
 
 
 ## Usage
@@ -20,24 +23,25 @@ In portal dosimetry with one of the images that should be evaluated in context, 
 
 Expects a csv text section in clipboard with the following format:
 
-For online or inVivo measurements:
-Treatment plan UID
-FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]
-INVIVO_END
+For online or inVivo measurements:  
+Treatment plan UID  
+FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]  
+INVIVO_END  
 
-For offline or inVitro measurements with a verification plan created:
-Verification plan UID
-FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]
-INVITRO_END
+For offline or inVitro measurements with a verification plan created:  
+Verification plan UID  
+FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]  
+INVITRO_END  
 
-Example:
-INVIVO
-P1 TestPlan
-1.2.246.352.71.5.375632402357.483435.20240116101721
-1,0.00,-30.00,0.050
-2,0.00,0.00,0.032
-3,0.00,0.00,0.089
-END_INVIVO
+Example:  
+INVIVO  
+P1 TestPlan  
+1.2.246.352.71.5.375632402357.483435.20240116101721  
+1,0.00,-30.00,0.050  
+2,0.00,0.00,0.032  
+3,0.00,0.00,0.089  
+END_INVIVO  
+
 
 
 
@@ -45,9 +49,10 @@ END_INVIVO
 
 ## Structure and function
 
+
+
+
 Searches for the UID belonging to the contexts image plan in the clipboard text, 
-
-
 
 
 
