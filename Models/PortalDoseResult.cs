@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using VMS.CA.Scripting;
 using VMS.DV.PD.Scripting;
 
@@ -44,6 +40,26 @@ namespace StaticFieldEpidEval.Models
             if (pdBeam.PortalDoseImages.Count > 0)
             {
                 FieldId = pdBeam.Beam.Id;
+
+                var planSessions = pdBeam.PDPlanSetup.Sessions;
+
+                calculationLog.AppendLine($"Nr of sessions: {planSessions.Count}");
+                var firstSession = planSessions.FirstOrDefault();
+                var lastSessionImages = planSessions.LastOrDefault().PortalDoseImages;
+                // add number of images for last session and the date for the last session to the calculation log
+                calculationLog.AppendLine($"Nr of images for last session: {lastSessionImages.Count}");
+                calculationLog.AppendLine($"Last session date: {lastSessionImages.FirstOrDefault().Image.CreationDateTime}");
+
+                // select all images for the last session with beam id equal to FieldId
+                var lastSessionImagesForField = lastSessionImages.Where(i => i.PDBeam.Id == FieldId);
+                // add the number of images for the last session and field id to the calculation log
+                calculationLog.AppendLine($"Nr of images for last session and field id {FieldId}: {lastSessionImagesForField.Count()}");
+                
+                var plannedMUs = pdBeam.PlannedMUs;
+              
+
+
+
                 IduVrt = pdBeam.PortalDoseImages.FirstOrDefault().Image.SID;
                 IduLat = pdBeam.PortalDoseImages.FirstOrDefault().Image.IDULat;
                 IduLng = pdBeam.PortalDoseImages.FirstOrDefault().Image.IDULng;
