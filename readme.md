@@ -7,11 +7,10 @@ Replaces the legacy method of using in vivo dosimetry with diodes for static fie
 
 Dependencies:
 
-```VMS.CA.Scripting
-```VMS.DV.PV.Scripting
-```PortalDosimetry
+VMS.DV.PV.Scripting, 
+VMS.CA.Scripting
 
-Runs as a script in Portal Dosimetry module in Aria, in the Tools menu when a portal dosimetry image is in context.
+Runs as a script in Portal Dosimetry module in Aria 16.1
 
 
 ## Usage

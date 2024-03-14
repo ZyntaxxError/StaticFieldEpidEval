@@ -70,7 +70,7 @@ namespace StaticFieldEpidEval.Models
                 PredictedValueCU = GetPredictedValueCU(predictedFieldData.PredictedValue, inVivo, ref calculationLog);
 
                 PortalDosePixelValueCU = GetPortalDosePixelValueCU(pdBeam, predictedFieldData, ref calculationLog);
-                PixelValueDeviationPercent = (PortalDosePixelValueCU - predictedFieldData.PredictedValue) / predictedFieldData.PredictedValue * 100;
+                PixelValueDeviationPercent = (PortalDosePixelValueCU - PredictedValueCU) / PredictedValueCU * 100;
                 calculationLog.AppendLine($"pixel value deviation from predicted: {PixelValueDeviationPercent:F1}%");
                 CalculationLog = calculationLog.ToString();
             }
@@ -98,7 +98,12 @@ namespace StaticFieldEpidEval.Models
                 calculationLog.AppendLine($"Warning: IDU Vrt is not the default value");
                 calculationLog.AppendLine($"Expected IDU Vrt: {expectedIduVrt:F1}, actual IDU Vrt: {IduVrt:F1}");
                 calculationLog.AppendLine("A correction will be applied to the predicted value");
-                return predictedValue * Math.Pow(expectedIduVrt / IduVrt, 2);
+                calculationLog.AppendLine($"Predicted value before correction: {predictedValue:F3}");
+                var correction = Math.Pow(expectedIduVrt / IduVrt, 2);
+                calculationLog.AppendLine($"Correction factor: {correction:F3}");
+                predictedValue *= correction;
+                return predictedValue;
+
             }
             else
             {
