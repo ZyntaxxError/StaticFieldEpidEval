@@ -21,24 +21,6 @@
         <Setter Property="Background" Value="{StaticResource GridBackground}" />
     </Style>
 
-    <Style TargetType="TabControl" x:Key="TabControl">
-        <Setter Property="Background" Value="#c8cfcf" />
-        <!-- Background color in main grids-->
-    </Style>
-
-    <Style TargetType="TabItem" x:Key="TopTabItem">
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Height" Value="30" />
-    </Style>
-
-    <Style TargetType="TabItem" x:Key="LeftTabItem">
-        <!-- width of the left area on page-->
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="Width" Value="180" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-    </Style>
-
     <Style TargetType="ItemsControl" x:Key="ItemsControl">
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Background" Value="{StaticResource GridBackground}" />
@@ -73,14 +55,6 @@
     <Style TargetType="Border" x:Key="VerificationFieldBorder">
         <Setter Property="BorderBrush" Value="DarkGray" />
         <Setter Property="BorderThickness" Value="0.5, 0.3, 0.5, 0.3" />
-    </Style>
-
-
-    <Style TargetType="TextBlock" x:Key="TabIconTextBlock">
-        <Setter Property="FontFamily" Value="Webdings" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="12"/>
     </Style>
 
     <Style TargetType="Border" x:Key="ErrorBorder">

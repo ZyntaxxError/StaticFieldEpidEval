@@ -22,10 +22,6 @@ namespace StaticFieldEpidEval.ViewModels.Base
 
         public ObservableCollection<Check> Checks { get; set; }
 
-        public BaseViewModel()
-        {
-            Checks = new ObservableCollection<Check>();
-        }
 
     }
 }

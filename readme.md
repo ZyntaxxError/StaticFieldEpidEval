@@ -43,7 +43,7 @@ P1 TestPlan
 END_INVIVO  
 
 
-
+If the beam is interrupted, and more than one image is acquired, create a composite image before running the script.
 
 
 

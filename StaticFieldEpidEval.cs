@@ -14,7 +14,7 @@ namespace VMS.DV.PD.Scripting
         {
             if (context.DoseImage == null)
             {
-                MessageBox.Show("The current context does not contain a dose image.");
+                MessageBox.Show("No dose image found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else
@@ -24,6 +24,7 @@ namespace VMS.DV.PD.Scripting
                     DataContext = new MainViewModel(context)
                 };
                 window.SizeToContent = SizeToContent.WidthAndHeight;
+                window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 window.Title = "StaticFieldEpidEval: Portal dosimetry evaluation of static fields";
             }
         }

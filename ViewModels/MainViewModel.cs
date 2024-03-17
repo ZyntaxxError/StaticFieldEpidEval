@@ -1,6 +1,7 @@
 ﻿using StaticFieldEpidEval.Models;
 using StaticFieldEpidEval.ViewModels.Base;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -29,15 +30,8 @@ namespace StaticFieldEpidEval.ViewModels
         {
             StringBuilder calculationLog = new StringBuilder();
 
-            // there is an ObservableCollection of Check created as the viewModel inherits from BaseViewModel
-            if (Checks.Count > 0)
-            {
-                MessageBox.Show($"Checks is an ObservableCollection of Check with {Checks.Count} items");
-            }
-            else
-            {
-                MessageBox.Show("Checks is null");
-            }
+            Checks = new ObservableCollection<Check>();
+
 
 
             var pdBeam = context.DoseImage.PDBeam;
@@ -75,6 +69,17 @@ namespace StaticFieldEpidEval.ViewModels
                         var pdResult = new PortalDoseResult(pdBeam, predictedFieldData, parsedLogFile.InVivoFlag);
                         PortalDoseResults.Add(pdResult);
                         calculationLog.AppendLine(pdResult.CalculationLog);
+                        // Add the Checks to the Checks collection, only if there's not any identical checks in the collection
+                        if (pdResult.Checks.Any())
+                        {
+                            foreach (var check in pdResult.Checks)
+                            {
+                                if (!Checks.Any(c => c.Description == check.Description && c.Result == check.Result))
+                                {
+                                    Checks.Add(check);
+                                }
+                            }
+                        }
                     }
                     else
                     {
