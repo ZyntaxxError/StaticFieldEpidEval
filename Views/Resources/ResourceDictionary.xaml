@@ -7,7 +7,6 @@
     <converters:CheckResultToColorConverter x:Key="checkResultToColor" />
     <!--<converters:InverseDoubleToBooleanConverter x:Key="inverseDoubleToBooleanConverter" />-->
     <!--<converters:CheckResultToColorConverter x:Key="checkResultToColor" />
-    <converters:SummaryResultToColorConverter x:Key="summaryToColor" />
     <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />-->
     <Color x:Key="ErrorBorderColor">#37dede</Color>
     <Color x:Key="GridColor">#EEF3F1</Color>

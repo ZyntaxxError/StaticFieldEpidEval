@@ -45,15 +45,12 @@ namespace StaticFieldEpidEval.Models
                 FieldId = pdBeam.Beam.Id;
                 PortalDoseImage imageToEvaluate = GetImageToEvaluate(calculationLog, pdBeam);
 
-                // TODO: Check if PlanChecker gives the UID for the verification plan if it is switched to offline mode
-
                 ReadoutPositionInCollimatorAsString = $"( {predictedFieldData.ReadOutPositionCollimatorAtIso.X / 10:F1}, {predictedFieldData.ReadOutPositionCollimatorAtIso.Y / 10:F1} )";
 
-                // get the pixel value from the portal dose image only if there is an image to evaluate
+                // get the pixel value from the portal dose image and the predicted value from the plan checker
                 if (imageToEvaluate != null)
                 {
                     PortalDosePixelValueCU = GetPortalDosePixelValueCU(pdBeam, imageToEvaluate, predictedFieldData, ref calculationLog);
-                    // if actual IduVrt not the default for InVivo or InVitro, add a correction and add information to the calculation log
                     PredictedValueCU = GetPredictedValueCU(predictedFieldData.PredictedValue, inVivo, ref calculationLog);
                 }
                 else
@@ -76,8 +73,13 @@ namespace StaticFieldEpidEval.Models
 
 
 
-        // TODO: refactor this to start by looking for last session and then look for composite images if more than one image is found for the last session
-
+        
+        /// <summary>
+        /// Select the image to evaluate for the field, if a composite image is available, select the last one, else select the last image for the last session
+        /// </summary>
+        /// <param name="calculationLog"></param>
+        /// <param name="pdBeam"></param>
+        /// <returns></returns>
         private PortalDoseImage GetImageToEvaluate(StringBuilder calculationLog, PDBeam pdBeam)
         {
             var planSessions = pdBeam.PDPlanSetup.Sessions;
@@ -130,12 +132,13 @@ namespace StaticFieldEpidEval.Models
             }
             else
             {
+                calculationLog.AppendLine($"No composite image available for field");
                 calculationLog.AppendLine($"Nr of sessions: {planSessions.Count}");
                 var lastSessionImages = planSessions.LastOrDefault().PortalDoseImages;
 
                 // select all images for the last session with beam id equal to FieldId
                 var lastSessionImagesForField = lastSessionImages.Where(i => i.PDBeam.Id == FieldId);
-                calculationLog.AppendLine($"No composite image available");
+                
                 // add the number of images for the last session and field id to the calculation log
                 calculationLog.AppendLine($"Nr of images for last session for field {FieldId}: {lastSessionImagesForField.Count()}");
                 calculationLog.AppendLine($"Last session date: {lastSessionImages.LastOrDefault().Image.CreationDateTime}");
@@ -176,6 +179,16 @@ namespace StaticFieldEpidEval.Models
             return predictedValue;
         }
 
+
+
+        /// <summary>
+        /// Retrieve the pixel value from the portal dose image for the readout position from the plan checker
+        /// </summary>
+        /// <param name="pdBeam"></param>
+        /// <param name="doseImage"></param>
+        /// <param name="predictedFieldData"></param>
+        /// <param name="calculationLog"></param>
+        /// <returns></returns>
         private double GetPortalDosePixelValueCU(PDBeam pdBeam, PortalDoseImage doseImage, PredictedFieldData predictedFieldData, ref StringBuilder calculationLog)
         {
             Frame portalDoseFrame = doseImage.Image.Frames[0];

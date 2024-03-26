@@ -106,7 +106,7 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FieldId}" Style="{StaticResource VerificationValueTextBlock}" />
                                     <!--Read out position value-->
-                                    <Border Grid.Column="0" Grid.Row="1" Background="Gray"/>
+                                    <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="1"/>
                                     <TextBlock Grid.Column="0" Grid.Row="1" Padding="0,5,0,5" Text="{Binding ReadoutPositionInCollimatorAsString}" Style="{StaticResource VerificationValueTextBlock}"/>
                                     <!--Calculated and measured values and result-->
                                     <Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="3"  Background="White" BorderBrush="Green" />
