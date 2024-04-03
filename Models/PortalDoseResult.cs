@@ -14,8 +14,12 @@ namespace StaticFieldEpidEval.Models
     /// </summary>
     public class PortalDoseResult
     {
+        // hard coded value for tolerance as these are reported to SSM
+        // identical values as those found in PlanChecker in the configuration file
         internal const double DefaultIduVrtInVivo = 1700.0;
+        internal const double ToleranceInVivoPercent = 15.0; 
         internal const double DefaultIduVrtInVitro = 1000.0;
+        internal const double ToleranceInVitroPercent = 7.0;
         public double IduVrt { get; set; }
         public double IduLat { get; set; }
         public double IduLng { get; set; }
@@ -60,8 +64,18 @@ namespace StaticFieldEpidEval.Models
                 }
 
                 // check that the predicted value and the pixel value are defined doubles and not NaN, else set PixelValueDeviationPercent to NaN
-                PixelValueDeviationPercent = !double.IsNaN(PredictedValueCU) && !double.IsNaN(PortalDosePixelValueCU) ? 
-                    (PortalDosePixelValueCU - PredictedValueCU) / PredictedValueCU * 100 : double.NaN;
+                // ReWrite this as a standard if to increase readability
+                if (!double.IsNaN(PredictedValueCU) && !double.IsNaN(PortalDosePixelValueCU))
+                {
+                    PixelValueDeviationPercent = (PortalDosePixelValueCU - PredictedValueCU) / PredictedValueCU * 100;
+                    IsResultWithinTolerance = inVivo ? Math.Abs(PixelValueDeviationPercent) <= ToleranceInVivoPercent : Math.Abs(PixelValueDeviationPercent) <= ToleranceInVitroPercent;
+                }
+                else
+                {
+                    PixelValueDeviationPercent = double.NaN;
+                    IsResultWithinTolerance = false;
+                }
+
            
                 CalculationLog = calculationLog.ToString();
             }
@@ -128,23 +142,30 @@ namespace StaticFieldEpidEval.Models
                 }
                 
                 calculationLog.AppendLine($"Composite image: {compositeImage.Id}");
-                Checks.Add(new Check(CheckResult.Warning, $"Composite image used for evaluation for field {FieldId}."));
+                Checks.Add(new Check(CheckResult.Information, $"Composite image used for evaluation of field {FieldId}."));
             }
             else
             {
                 calculationLog.AppendLine($"No composite image available for field");
                 calculationLog.AppendLine($"Nr of sessions: {planSessions.Count}");
-                var lastSessionImages = planSessions.LastOrDefault().PortalDoseImages;
+                var lastPortalDoseSessionImages = planSessions.LastOrDefault().PortalDoseImages;
 
                 // select all images for the last session with beam id equal to FieldId
-                var lastSessionImagesForField = lastSessionImages.Where(i => i.PDBeam.Id == FieldId);
+                var lastSessionImagesForField = lastPortalDoseSessionImages.Where(i => i.PDBeam.Id == FieldId);
                 
                 // add the number of images for the last session and field id to the calculation log
                 calculationLog.AppendLine($"Nr of images for last session for field {FieldId}: {lastSessionImagesForField.Count()}");
-                calculationLog.AppendLine($"Last session date: {lastSessionImages.LastOrDefault().Image.CreationDateTime}");
+                // Create a check with warning if more than one image is found for the last session, suggest using composite image
+                if (lastSessionImagesForField.Count() > 1)
+                {
+                    calculationLog.AppendLine($"WARNING: More than one image found for last session for field {FieldId}.");
+                    calculationLog.AppendLine($"Evaluation will be done for image with Id: {lastSessionImagesForField.LastOrDefault().Id}");
+                    Checks.Add(new Check(CheckResult.Warning, $"More than one image found for last session for field {FieldId}. Evaluation will be done for image with Id: {lastSessionImagesForField.LastOrDefault().Id}. " +
+                        $"If the beam was interrupted, create a composite image for evaluation."));
+                }
+                calculationLog.AppendLine($"Last session date: {lastPortalDoseSessionImages.LastOrDefault().Image.CreationDateTime}");
                 imageToEvaluate = lastSessionImagesForField.LastOrDefault();
             }
-
             return imageToEvaluate;
         }
 
@@ -249,8 +270,10 @@ namespace StaticFieldEpidEval.Models
             else
             {
                 calculationLog.AppendLine($"pixel value  {portalDoseFrame.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]):F3}");
-                calculationLog.AppendLine($"readoutPositionIndexX:{readoutPositionIndexX:F1}, readoutPositionIndexY:{readoutPositionIndexY:F1}");
-                calculationLog.AppendLine($"Distance from image left:{checkX:F1} mm, distance from image top:{checkY:F1}");
+                calculationLog.AppendLine($"readoutPositionIndexX:{readoutPositionIndexX:F1}");
+                calculationLog.AppendLine($"readoutPositionIndexY:{readoutPositionIndexY:F1}");
+                calculationLog.AppendLine($"Distance from image left:{checkX:F1} mm");
+                calculationLog.AppendLine($"Distance from image top:{checkY:F1} mm");
                 return portalDoseFrame.VoxelToDisplayValue(pixelsPort[readoutPositionIndexX, readoutPositionIndexY]);
             }
         }

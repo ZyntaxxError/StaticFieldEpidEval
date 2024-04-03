@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace StaticFieldEpidEval.ViewModels.Base
 {
+    /// <summary>
+    /// Base class for all ViewModels, implements INotifyPropertyChanged and provides a collection of Check objects
+    /// </summary>
     internal class BaseViewModel
     {
 
@@ -21,7 +24,5 @@ namespace StaticFieldEpidEval.ViewModels.Base
         }
 
         public ObservableCollection<Check> Checks { get; set; }
-
-
     }
 }

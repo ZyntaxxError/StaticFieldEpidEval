@@ -49,17 +49,20 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="VMS.CA.Scripting">
-      <HintPath>H:\Aria 18\PortalDosimetry\VMS.CA.Scripting.dll</HintPath>
+    <Reference Include="VMS.CA.Scripting, Version=16.1.137.0, Culture=neutral, PublicKeyToken=bd317adc1d7d9856, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\PortalDosimetryAPI\VMS.CA.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="VMS.DV.PD.Scripting">
-      <HintPath>H:\Aria 18\PortalDosimetry\VMS.DV.PD.Scripting.dll</HintPath>
+    <Reference Include="VMS.DV.PD.Scripting, Version=16.1.137.0, Culture=neutral, PublicKeyToken=bd317adc1d7d9856, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\PortalDosimetryAPI\VMS.DV.PD.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Check.cs" />
     <Compile Include="Models\CheckResult.cs" />
+    <Compile Include="Models\PredictedFieldData.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\Converters\BooleanToCollapsedConverter.cs" />

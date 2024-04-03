@@ -16,7 +16,7 @@
     </UserControl.Resources>
 
 
-    <Grid Margin="10">
+    <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -27,12 +27,10 @@
         </Grid.RowDefinitions>
 
         <!--StackPanel that contains title and any general information, any controls also perhaps-->
-        <StackPanel Grid.Row="0" Grid.Column="0" Margin="8">
-            <TextBlock Text="Evaluation" FontSize="14" HorizontalAlignment="Center"></TextBlock>
-            <TextBlock Text="{Binding VerificationTabTitle}" FontSize="14" HorizontalAlignment="Center"></TextBlock>
-            <TextBlock Text="{Binding PreTreatmentVerificationReason}" HorizontalAlignment="Center"></TextBlock>
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Evaluation of portal dose images" FontSize="14" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock Text="{Binding PlanId}" FontSize="14" HorizontalAlignment="Center"></TextBlock>
         </StackPanel>
-
 
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
@@ -57,19 +55,21 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Field Id:" Style="{StaticResource VerificationTitleTextBlock}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Field Id:" 
+                           Style="{StaticResource VerificationTitleTextBlock}"/>
                 <!--Read out position headline-->
-                <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"  BorderBrush="Blue" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Read out position  (X,Y) [cm]" 
                            Style="{StaticResource VerificationTitleTextBlock}"></TextBlock>
                 <!--Values and result headline-->
-                <Border Grid.Row="2" Grid.Column="0"  Grid.RowSpan="3"  Background="White" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Calculated value [CU]" Style="{StaticResource VerificationTitleTextBlock}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Measured value [CU]" Style="{StaticResource VerificationTitleTextBlock}"/>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Deviation [%]" Style="{StaticResource VerificationTitleTextBlock}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Calculated value [CU]" 
+                           Style="{StaticResource VerificationTitleTextBlock}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Measured value [CU]" 
+                           Style="{StaticResource VerificationTitleTextBlock}"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Deviation [%]" 
+                           Style="{StaticResource VerificationTitleTextBlock}"/>
                 <!--Calculation log button-->
                 <ToggleButton Grid.Column="0" Grid.Row="5"
-                              Margin="0, 5, 0, 5"
+                              Margin="5, 10, 0, 5"
                               IsChecked="{Binding ShowCalculationLog, Mode=TwoWay}"  
                               Content="View calculation summary" 
                               FontWeight="Normal"
@@ -104,33 +104,32 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FieldId}" Style="{StaticResource VerificationValueTextBlock}" />
+                                    <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" Style="{StaticResource VerificationFieldBorder}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding FieldId}" 
+                                               Style="{StaticResource VerificationValueTextBlock}" />
                                     <!--Read out position value-->
-                                    <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="1"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Padding="0,5,0,5" Text="{Binding ReadoutPositionInCollimatorAsString}" Style="{StaticResource VerificationValueTextBlock}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding ReadoutPositionInCollimatorAsString}" 
+                                               Style="{StaticResource VerificationValueTextBlock}"/>
                                     <!--Calculated and measured values and result-->
-                                    <Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="3"  Background="White" BorderBrush="Green" />
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding PredictedValueCU, StringFormat=F3}" Style="{StaticResource VerificationValueTextBlock}"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding PortalDosePixelValueCU, StringFormat=F3}" Style="{StaticResource VerificationValueTextBlock}"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding PixelValueDeviationPercent, StringFormat=F1}" Style="{StaticResource VerificationValueTextBlock}">
-                                    <!--Do not want to have the tolerances in this script as it is in the PlanChecker script-->
-                                        <!--<TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="FontWeight" Value="DemiBold" />
-                                            <Setter Property="Padding" Value="5 1 5 1" />
-                                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsResultOutsideTolerance}" Value="True">
-                                                    <Setter Property="Foreground" Value="Red"/>
-                                                    <Setter Property="FontWeight" Value="Bold" />
-                                                    <Setter Property="Padding" Value="5 1 5 1" />
-                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>-->
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding PredictedValueCU, StringFormat=F3}" 
+                                               Style="{StaticResource VerificationValueTextBlock}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding PortalDosePixelValueCU, StringFormat=F3}" 
+                                               Style="{StaticResource VerificationValueTextBlock}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding PixelValueDeviationPercent, StringFormat=F1}" >
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                                <Setter Property="FontWeight" Value="DemiBold" />
+                                                <Setter Property="Padding" Value="5 1 5 1" />
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsResultWithinTolerance}" Value="True">
+                                                        <Setter Property="Foreground" Value="Green"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
                                     </TextBlock>
-                                    <!--<TextBlock Grid.Column="0" Grid.Row="11" Text="{Binding CalculationLog}" />-->
 
                                     <!--Calculation log-->
                                     <ScrollViewer Grid.Column="0" Grid.Row="5" 
@@ -152,27 +151,28 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
+        <!--Checks-->
         <ItemsControl Grid.Row="2" ItemsSource="{Binding Checks }">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                         </Grid.RowDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" 
+                                Style ="{StaticResource CheckBorder}" BorderBrush="{Binding Result, Converter={StaticResource checkResultToColor}}"/>
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Result, Converter={StaticResource checkResultToString}}" 
-                                  Foreground="{Binding Result, Converter={StaticResource checkResultToColor}}" 
+                                  Foreground="{Binding Result, Converter={StaticResource checkResultToColor}}"
+                                   Margin="2"
                                   FontFamily="Webdings" FontWeight="Bold" />
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Description}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        
- 
-        
     </Grid>
 </UserControl>

@@ -5,9 +5,7 @@
     <converters:CheckResultToStringConverter x:Key="checkResultToString" />
     <converters:BooleanToCollapsedConverter x:Key="booleanToCollapsedConverter" />
     <converters:CheckResultToColorConverter x:Key="checkResultToColor" />
-    <!--<converters:InverseDoubleToBooleanConverter x:Key="inverseDoubleToBooleanConverter" />-->
-    <!--<converters:CheckResultToColorConverter x:Key="checkResultToColor" />
-    <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />-->
+
     <Color x:Key="ErrorBorderColor">#37dede</Color>
     <Color x:Key="GridColor">#EEF3F1</Color>
     <Color x:Key="SummaryColor">#37dede</Color>
@@ -20,13 +18,6 @@
         <Setter Property="Background" Value="{StaticResource GridBackground}" />
     </Style>
 
-    <Style TargetType="ItemsControl" x:Key="ItemsControl">
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Background" Value="{StaticResource GridBackground}" />
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="BorderBrush" Value="#CCD6D2" />
-    </Style>
-
     <Style TargetType="TextBlock" x:Key="IconTextBlock">
         <Setter Property="FontFamily" Value="Webdings" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -35,11 +26,6 @@
     </Style>
 
     <!--Verification Style-->
-
-    <Style TargetType="ItemsControl" x:Key="VerificationItemsControl">
-        <Setter Property="FontWeight" Value="Normal" />
-    </Style>
-
     <Style TargetType="TextBlock" x:Key="VerificationTitleTextBlock">
         <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="Padding" Value="5 1 5 1" />
@@ -56,11 +42,10 @@
         <Setter Property="BorderThickness" Value="0.5, 0.3, 0.5, 0.3" />
     </Style>
 
-    <Style TargetType="Border" x:Key="ErrorBorder">
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="CornerRadius" Value="0 0 2 2" />
-        <Setter Property="BorderBrush" Value="{StaticResource ErrorBackground}" />
-        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+    <Style TargetType="Border" x:Key="CheckBorder">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="0 0 3 3" />
+        <Setter Property="Margin" Value="0 1 0 1" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ErrorBorderTextBlock">
@@ -75,15 +60,6 @@
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-
-    <Style TargetType="TextBlock" x:Key="SummaryTextBlock">
-        <Setter Property="Background" Value="{StaticResource SummaryTextBlockBackground}" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="4 4" />
-        <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
 </ResourceDictionary>

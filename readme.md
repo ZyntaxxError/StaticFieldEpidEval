@@ -14,8 +14,6 @@ Runs as a script in Portal Dosimetry module in Aria 16.1
 Requires a cvs-formatted text in System.Windows.Forms.Clipboard with the expected values for the fields to be evaluated.
 
 
-
-
 ## Usage
 
 In portal dosimetry with one of the images that should be evaluated in context, select the Tools menu and select StaticFieldEpidEval.
@@ -25,12 +23,12 @@ Expects a csv text section in clipboard with the following format:
 
 For online or inVivo measurements:  
 Treatment plan UID  
-FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]  
+FieldID [int],Read out position in collimator coordinates (IEC61217) in mm [double,double], expected value in CU (calibrated units) [double]  
 INVIVO_END  
 
 For offline or inVitro measurements with a verification plan created:  
 Verification plan UID  
-FieldID,Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]  
+FieldID [int],Read out position in collimator coordinates [IEC61217] in mm [double,double], expected value in CU (calibrated units) [double]  
 INVITRO_END  
 
 ### Example:  
@@ -49,11 +47,8 @@ If the beam is interrupted, and more than one image is acquired, create a compos
 
 ## Structure and function
 
-
-
-
-Searches for the UID belonging to the contexts image plan in the clipboard text, 
-
+Retrieves the image plan UID from the context, and searches for the corresponding csv text in the clipboard.
+For each field in the csv, it retrieves the image from the context, and evaluates the field at the specified position.
 
 
 

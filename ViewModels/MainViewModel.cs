@@ -25,23 +25,27 @@ namespace StaticFieldEpidEval.ViewModels
             set { _showCalculationLog = value; OnPropertyChanged(); }
         }
 
+        private string _planId;
+        public string PlanId
+        {
+            get { return _planId; }
+            set { _planId = value; OnPropertyChanged(); }
+        }
+
 
         public MainViewModel(ScriptContext context)
         {
-            StringBuilder calculationLog = new StringBuilder();
-
             Checks = new ObservableCollection<Check>();
-
-
 
             var pdBeam = context.DoseImage.PDBeam;
             var pdPlan = pdBeam.PDPlanSetup;
             var plan = pdBeam.PDPlanSetup.PlanSetup;
-            var planUID = plan.UID;
+            PlanId = plan.Id;
 
             // Collect data from the log file, i.e. the calculation log from PlanCheck copied to clipboard 
-            var parsedLogFile = new ParseLogFile(planUID);
-            // If any errors add to Checks
+            var parsedLogFile = new ParseLogFile(plan.UID);
+
+            // If any errors or warnings from parsing the log, add to Checks
             if (parsedLogFile.Checks.Any())
             {
                 foreach (var check in parsedLogFile.Checks)
@@ -49,11 +53,6 @@ namespace StaticFieldEpidEval.ViewModels
                     Checks.Add(check);
                 }
             }
-
-
-            calculationLog.AppendLine($"Plan id {plan.Id}");
-            calculationLog.AppendLine($"pdPlan id {pdPlan.Id}");
-            calculationLog.AppendLine($"images {pdBeam.PortalDoseImages.Count}");
 
             List<PDBeam> pdBeams = pdPlan.Beams.Where(b => b.PortalDoseImages.Count >= 1).ToList();
 
@@ -68,8 +67,7 @@ namespace StaticFieldEpidEval.ViewModels
                     {
                         var pdResult = new PortalDoseResult(pdBeam, predictedFieldData, parsedLogFile.InVivoFlag);
                         PortalDoseResults.Add(pdResult);
-                        calculationLog.AppendLine(pdResult.CalculationLog);
-                        // Add the Checks to the Checks collection, only if there's not any identical checks in the collection
+                        // Add the Checks to the Checks collection, only if there's not already an identical check in the collection
                         if (pdResult.Checks.Any())
                         {
                             foreach (var check in pdResult.Checks)
@@ -83,13 +81,13 @@ namespace StaticFieldEpidEval.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show($"No beam found for field id {predictedFieldData.FieldId}");
+                        Checks.Add(new Check(CheckResult.Error, $"No portal dose beam found for field id {predictedFieldData.FieldId}"));
                     }
                 }
             }
             else
             {
-                MessageBox.Show("No predicted field data found, copy the log file to clipboard in PlanChecker");
+                Checks.Add(new Check(CheckResult.Error, "No predicted field data found, copy the log file to clipboard in PlanChecker"));
             }
         }
     }
