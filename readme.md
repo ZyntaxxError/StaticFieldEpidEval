@@ -53,6 +53,3 @@ For each field in the csv, it retrieves the image from the context, and evaluate
 
 
 
-## License
-
-TBD ( maybe [MIT](https://choosealicense.com/licenses/mit/) or something else)
