@@ -23,8 +23,6 @@ namespace VMS.DV.PD.Scripting
                 {
                     DataContext = new MainViewModel(context)
                 };
-                // Set minimum size of the window, want to cover the default window that 
-                // always pops up when running a script in Aria to make it more user friendly
                 window.MinWidth = 600;
                 window.MinHeight = 300;
                 window.SizeToContent = SizeToContent.WidthAndHeight;
